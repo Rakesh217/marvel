@@ -22,16 +22,16 @@ export default function Register(props) {
     let list = [];
 
     if (State.firstName.length < 3) {
-      list.push("first name.");
+      list.push("First name should contain at least 3 characters");
     }
     if (State.lastName.length < 3) {
-      list.push("lastname.");
+      list.push("First name should contain at least 3 characters");
     }
     if (State.phoneNumber.length !== 10) {
-      list.push("phone number");
+      list.push("Enter correct phone number");
     }
     if (State.password.length < 7) {
-      list.push("password");
+      list.push("Password is too small");
     }
     // if (
     //   State.password.toLowerCase() === State.firstName.toLowerCase() ||
@@ -171,7 +171,16 @@ export default function Register(props) {
               onChange={handleChange}
             ></textarea>
           </div>
-          {Error.length > 0 ? Error.map((item) => <p> {item}</p>) : null}
+          {
+            // Error.length > 0
+            // ? Error.map((item) => (
+            //     <div class="alert alert-dismissible alert-warning">
+            //       <h4 class="alert-heading">Warning!</h4>
+            //       <p class="mb-0">{item}</p>
+            //     </div>
+            //   ))
+            // : null
+          }
           <button
             type="button"
             class="btn btn-primary btn-lg btn-block"
@@ -181,6 +190,54 @@ export default function Register(props) {
           </button>
         </fieldset>
       </form>
+      {Error.length > 0
+        ? Error.map((item) => (
+            <div
+              class="modal fade right"
+              id="exampleModalPreview"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="exampleModalPreviewLabel"
+              aria-hidden="true"
+            >
+              <div
+                class="modal-dialog modal-side modal-top-right"
+                role="document"
+              >
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalPreviewLabel">
+                      Modal title
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>{item}</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button type="button" class="btn btn-primary">
+                      Save changes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+        : ""}
     </div>
   );
 }

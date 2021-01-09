@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import Index from "./Index";
-import Data from "../data.json";
 
 export default class Home extends Component {
   state = {
@@ -11,23 +9,22 @@ export default class Home extends Component {
     e.preventDefault();
     this.setState({ charName: e.target.value });
   };
-  // handleClick = (e) => {
-  //   e.preventDefault();
-  //   this.props.receiveCharName(this.state.charName);
-  // };
+  handleClick = (e) => {
+    e.preventDefault();
+  };
   componentDidMount = () => {
-    // let myHeader = new Headers();
-    // myHeader.append("Content-Type", "application/json");
-    // fetch("http://hp-api.herokuapp.com/api/characters", {
-    //   method: "GET",
-    //   headers: myHeader,
-    // })
-    //   .then((result) => result.json())
-    //   .then((apiData) => this.setState({ data: apiData }))
-    //   .catch((error) => console.log("fetchError", error));
+    let myHeader = new Headers();
+    myHeader.append("Content-Type", "application/json");
+    fetch("http://localhost:5000/getCharacters", {
+      method: "GET",
+      headers: myHeader,
+    })
+      .then((result) => result.json())
+      .then((apiData) => this.setState({ data: apiData }))
+      .catch((error) => console.log("fetchError", error));
   };
   render() {
-    // console.log("HomeData", this.state.data[0]);
+    console.log("HomeData", this.state.data[0]);
     {
       // <ul className="list-group list-group-flush">
       //   <li className="list-group-item">Home World: {value.homeworld}</li>
@@ -40,7 +37,7 @@ export default class Home extends Component {
       // </ul>;
     }
     return (
-      <div class="jumbotron">
+      <div class="main">
         <h1 class="display-3" style={{ color: "#9a9c46" }}>
           <b>Search For Your Favorite Characters Here</b>
         </h1>
@@ -59,31 +56,90 @@ export default class Home extends Component {
           />
         </form>
         <hr></hr>
-        <div class="row">
-          {Data.map((value, index) =>
+        {/*<div
+          id="carouselBasicExample"
+          class="carousel slide carousel-fade"
+          data-mdb-ride="carousel"
+        >
+          <ol class="carousel-indicators">
+            <li
+              data-mdb-target="#carouselBasicExample"
+              data-mdb-slide-to="0"
+              class="active"
+            ></li>
+            <li
+              data-mdb-target="#carouselBasicExample"
+              data-mdb-slide-to="1"
+            ></li>
+          </ol>
+
+          <div class="carousel-inner">
+            <div class="carousel-item active" id="carouselBasicExample1">
+              <img
+                src="https://mdbootstrap.com/img/Photos/Slides/img%20(15).jpg"
+                class="d-block w-100"
+                alt="..."
+              />
+              <div class="carousel-caption d-none d-md-block">
+                <h5>First slide label</h5>
+                <p>
+                  Nulla vitae elit libero, a pharetra augue mollis interdum.
+                </p>
+              </div>
+            </div>
+
+            <div class="carousel-item" id="carouselBasicExample2">
+              <img
+                src="https://mdbootstrap.com/img/Photos/Slides/img%20(23).jpg"
+                class="d-block w-100"
+                alt="..."
+              />
+              <div class="carousel-caption d-none d-md-block">
+                <h5>Third slide label</h5>
+                <p>
+                  Praesent commodo cursus magna, vel scelerisque nisl
+                  consectetur.
+                </p>
+              </div>
+            </div>
+          </div>
+          <a
+            class="carousel-control-prev"
+            href="#carouselBasicExample"
+            role="button"
+            data-mdb-slide="prev"
+          >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </a>
+          <a
+            class="carousel-control-next"
+            href="#carouselBasicExample"
+            role="button"
+            data-mdb-slide="next"
+          >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </a>
+          </div>**/}
+        <div className="row">
+          {this.state.data.map((value, index) =>
             value.name
               .toLowerCase()
               .includes(this.state.charName.toLowerCase()) ? (
-              <div class="col" style={{ padding: "1rem", margin: "1rem" }}>
-                <div
-                  className="card"
-                  style={{
-                    width: "12rem",
-                    height: "15rem",
-                    backgroundColor: "black",
-                  }}
+              <div>
+                <img
+                  src={value.image}
+                  className="card-img-top "
+                  alt="..."
+                  style={{ width: "10rem", height: "10rem", padding: "2rem" }}
+                />
+                <h5
+                  className="card-title"
+                  style={{ paddingRight: "2rem", paddingLeft: "2rem" }}
                 >
-                  <img
-                    src={value.image}
-                    className="card-img-top "
-                    alt="..."
-                    style={{ width: "12rem", height: "10rem" }}
-                  />
-
-                  <div className="card-body">
-                    <h5 className="card-title">{value.name}</h5>
-                  </div>
-                </div>
+                  {value.name}
+                </h5>
               </div>
             ) : (
               ""
