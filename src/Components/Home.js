@@ -50,7 +50,7 @@ export default class Home extends Component {
             type="text"
             placeholder="Search"
             aria-label="Search"
-            style={{ width: "30rem", marginLeft: "30rem" }}
+            style={{ width: "30rem", marginLeft: "30rem", opacity: 0.7 }}
             onKeyPress={(e) => {
               e.key === "Enter" && e.preventDefault();
             }}

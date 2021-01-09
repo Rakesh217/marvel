@@ -1,12 +1,10 @@
 import "./App.css";
-import Home from "./Components/Home";
-import Login from "./Components/Login";
-import Register from "./Components/Register";
+import Router from "./Components/Routes";
 
 function App() {
   return (
-    <div className="App">
-      <Login />
+    <div>
+      <Router />
     </div>
   );
 }

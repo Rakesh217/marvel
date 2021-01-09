@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import { Link } from "react-router-dom";
 export default class Login extends Component {
   state = {
     email: "",
@@ -9,29 +9,26 @@ export default class Login extends Component {
   };
   handleChange = (e) => {
     e.preventDefault();
-    this.setState({ [e.target.name]: [e.target.value] });
+    this.setState({ [e.target.name]: e.target.value, error: false });
   };
   handleClick = (e) => {
     e.preventDefault();
-    this.props.history.push();
-    // let myHeader = new Headers();
-    // let api = "";
-    // let myBody = {email: this.state.email, password: this.state.password};
-    // myHeader.append("Content-Type", "application/json");
-    // fetch(api, {
-    //   method: "POST",
-    //  body: myBody,
-    //   headers: myHeader,
-    // })
-    //   .then((result) => result.json())
-    //   .then((dbData) =>
-    //     dbData.email.toLowerCase() === this.state.email.toLowerCase()
-    //       ? dbData.password === this.state.password
-    //         ? this.setState({ error: false })
-    //         : this.setState({ error: true })
-    //       : this.setsState({ error: true })
-    //   )
-    //   .catch((error) => console.log(error));
+    let myHeader = new Headers();
+    let api = "http://localhost:5000/validateUser";
+    let myBody = { emailId: this.state.email, password: this.state.password };
+    myHeader.append("Content-Type", "application/json");
+    fetch(api, {
+      method: "POST",
+      body: JSON.stringify(myBody),
+      headers: myHeader,
+    })
+      .then((result) => result.json())
+      .then((dbData) =>
+        dbData.message === "Success"
+          ? this.props.history.push("/home")
+          : this.setState({ error: true })
+      )
+      .catch((error) => console.log(error));
   };
   render() {
     return (
@@ -63,6 +60,7 @@ export default class Login extends Component {
               />
             </div>
           </fieldset>
+          {this.state.error ? <p>Wrong Password</p> : ""}
           <button
             type="button"
             class="btn btn-primary btn-lg btn-block"
@@ -71,7 +69,7 @@ export default class Login extends Component {
             Login
           </button>
           <small id="emailHelp" className="form-text text-muted">
-            New user? SignUp here.
+            <Link to="/register">New user? SignUp here.</Link>
           </small>
         </form>
       </div>
