@@ -17,3 +17,13 @@ export function postDataToServer(url, myBody) {
     headers: myHeader,
   });
 }
+
+export function validateUser(api, myBody) {
+  let myHeader = new Headers();
+  myHeader.append("Content-Type", "application/json");
+  return fetch(api, {
+    method: "POST",
+    body: JSON.stringify(myBody),
+    headers: myHeader,
+  });
+}

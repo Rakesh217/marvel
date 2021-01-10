@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-
-export default function Register(props) {
+import React, { useState, useEffect, useSelector } from "react";
+import { connect } from "react-redux";
+import { addUser } from "../redux/Actions/Index";
+function Register(props) {
   const [State, setState] = useState({
     firstName: "",
     lastName: "",
@@ -11,6 +12,14 @@ export default function Register(props) {
     description: "",
   });
   const [Error, setError] = useState([]);
+
+  useEffect(() => {
+    console.log("useEffect", props.result);
+    if (props.result?.message === "Success") {
+      props.history.push("/");
+    }
+  }, [props.result]);
+
   let handleChange = (e) => {
     e.preventDefault();
     console.log(e.target.name, e.target.value);
@@ -43,16 +52,7 @@ export default function Register(props) {
     if (list.length < 1) {
       list = [];
       setError([]);
-      let myHeader = new Headers();
-      let api = "http://localhost:5000/addUser";
-      let myBody = State;
-      myHeader.append("Content-Type", "application/json");
-      fetch(api, {
-        method: "POST",
-        body: JSON.stringify(myBody),
-        headers: myHeader,
-      }).catch((error) => console.log(error));
-      props.history.push("/");
+      props.dispatch(addUser(State));
     } else {
       setError(list);
     }
@@ -241,3 +241,11 @@ export default function Register(props) {
     </div>
   );
 }
+
+function mapStateToProps(state) {
+  return {
+    result: state.User.result,
+  };
+}
+
+export default connect(mapStateToProps)(Register);

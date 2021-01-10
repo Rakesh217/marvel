@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-
-export default class Home extends Component {
+import { connect } from "react-redux";
+import { getChar } from "../redux/Actions/Index";
+class Home extends Component {
   state = {
     data: [],
     charName: "",
@@ -12,19 +13,21 @@ export default class Home extends Component {
   handleClick = (e) => {
     e.preventDefault();
   };
+  static getDerivedStateFromProps(props, state) {
+    if (props.result !== state.data) {
+      return { data: props.result };
+    }
+  }
   componentDidMount = () => {
-    let myHeader = new Headers();
-    myHeader.append("Content-Type", "application/json");
-    fetch("http://localhost:5000/getCharacters", {
-      method: "GET",
-      headers: myHeader,
-    })
-      .then((result) => result.json())
-      .then((apiData) => this.setState({ data: apiData }))
-      .catch((error) => console.log("fetchError", error));
+    this.props.dispatch(getChar());
+  };
+  componentDidUpdate = () => {
+    if (this.props.result !== this.state.data) {
+      this.setState({ data: this.props.result });
+    }
   };
   render() {
-    console.log("HomeData", this.state.data[0]);
+    console.log("HomeData", this.state.data);
     {
       // <ul className="list-group list-group-flush">
       //   <li className="list-group-item">Home World: {value.homeworld}</li>
@@ -150,3 +153,8 @@ export default class Home extends Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  console.log(state.Character.result);
+  return { result: state.Character.result };
+};
+export default connect(mapStateToProps)(Home);

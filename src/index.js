@@ -6,6 +6,8 @@ import reportWebVitals from "./reportWebVitals";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
+import { Provider } from "react-redux";
+import { store } from "./redux/Store/Index";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -13,7 +15,9 @@ ReactDOM.render(
       rel="stylesheet"
       href="https://bootswatch.com/4/cerulean/bootstrap.min.css"
     />
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );

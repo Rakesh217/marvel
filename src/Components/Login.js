@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-export default class Login extends Component {
+import { connect } from "react-redux";
+import { validateUser } from "../redux/Actions/Index";
+class Login extends Component {
   state = {
     email: "",
     password: "",
     data: [],
     error: false,
+    result: {},
   };
   handleChange = (e) => {
     e.preventDefault();
@@ -13,22 +16,25 @@ export default class Login extends Component {
   };
   handleClick = (e) => {
     e.preventDefault();
-    let myHeader = new Headers();
-    let api = "http://localhost:5000/validateUser";
-    let myBody = { emailId: this.state.email, password: this.state.password };
-    myHeader.append("Content-Type", "application/json");
-    fetch(api, {
-      method: "POST",
-      body: JSON.stringify(myBody),
-      headers: myHeader,
-    })
-      .then((result) => result.json())
-      .then((dbData) =>
-        dbData.message === "Success"
-          ? this.props.history.push("/home")
-          : this.setState({ error: true })
-      )
-      .catch((error) => console.log(error));
+    let details = {
+      emailId: this.state.email,
+      password: this.state.password,
+    };
+    this.props.dispatch(validateUser(details));
+  };
+  // static getDerivedStateFromProps = (props, state) => {
+  //   if (props.result !== state.result) {
+  //     return { result: props.result };
+  //   }
+  // };
+  componentDidUpdate = () => {
+    console.log("Prop Result", this.props.result);
+    if (this.props.result?.message === "Success") {
+      this.props.history.push("/home");
+    }
+    if (this.props.result?.message === "Wrong Password") {
+      if (this.state.error !== true) this.setState({ error: true });
+    }
   };
   render() {
     return (
@@ -76,3 +82,9 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  console.log(state.Validation.result);
+  return { result: state.Validation.result };
+};
+export default connect(mapStateToProps)(Login);
